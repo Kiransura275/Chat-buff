@@ -14,15 +14,13 @@ const messageSchema = new Schema(
 		},
 		message: {
 			type: String,
-			required: true,
 		},
-		photo: {
-			type: {
-				url: "",
-			},
-			default: {
-				url: "https://placehold.co/400",
-			},
+		seen: {
+			type: Boolean,
+			default: false,
+		},
+		image: {
+			type: String,
 		},
 	},
 	{ timestamps: true }
