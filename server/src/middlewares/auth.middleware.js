@@ -14,7 +14,9 @@ export const isLoggedIn = asyncHandler(async (req, res, next) => {
 		console.log(process.env.ACCESS_TOKEN_SECRET);
 		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 		console.log("decoded ===>", decoded);
-		req.user = await User.findById(decoded.id);
+		const user = await User.findById(decoded.id);
+		if (!user?._id) throw new ApiError(400, "UnAuthorised User");
+		req.user = user;
 		next();
 	} catch (error) {
 		throw new ApiError(403, "UnAuthorized user !");

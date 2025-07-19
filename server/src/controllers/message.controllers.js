@@ -6,17 +6,19 @@ import io, { socketList } from "../index.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
+import mongoose from "mongoose";
 
 export const getAllUsers = asyncHandler(async (req, res) => {
+	console.log(req.user._id);
 	const users = await User.find({
-		id: { $ne: req.user._id },
+		_id: { $ne: new mongoose.Types.ObjectId(req.user._id) },
 	}).select("id userName avatar bio contact");
 	console.log(users);
 
 	const unSeenMessages = {};
 
 	const messages = await Message.find({
-		sender: { $ne: mongoose.Types.ObjectId(req.user._id) },
+		sender: { $ne: new mongoose.Types.ObjectId(req.user._id) },
 	});
 	console.log(messages);
 
@@ -84,7 +86,6 @@ export const getAllMessages = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, messages, "messages fetched Syccessfully !"));
 });
 export const sendMessage = asyncHandler(async (req, res) => {
-	console.log("sending message");
 	const { id } = req.params;
 
 	if (!isValidObjectId(id)) {
@@ -92,10 +93,8 @@ export const sendMessage = asyncHandler(async (req, res) => {
 	}
 	const message = req.body.message || "";
 
-	console.log("message", message);
-
 	const localImage = req.file;
-	console.log("localImage", localImage);
+
 	let image = null;
 	if (localImage) {
 		const imageLocalPath = localImage?.path;
@@ -119,8 +118,13 @@ export const sendMessage = asyncHandler(async (req, res) => {
 	if (!newMessage) {
 		throw new ApiError(400, "Error while creating message !");
 	}
-	if (socketList[req.user._id]) {
-		io.to(socketList[id]).emit("message", newMessage);
+	console.log(socketList, id);
+
+	if (socketList[id]) {
+		console.log(
+			"vhbjnkmloichbjnkmltfgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjgvbgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsgvbiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndsiojgrbjhkcmlaxjhcbjcasmkzxkanjcdbhvfjndscdbhvfjndsm"
+		);
+		io.emit("message", message);
 	}
 	res
 		.status(201)

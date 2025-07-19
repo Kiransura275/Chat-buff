@@ -11,10 +11,10 @@ const generateAccessandRefreshToken = async (id) => {
 			throw new ApiError(400, "Invalid objectId !");
 		}
 		const user = await User.findById(id);
-		console.log("user =>", user);
+
 		const accessToken = user.generateAccessToken(id);
 		const refreshToken = user.generateRefreshToken(id);
-		console.log("a", accessToken, refreshToken);
+	
 
 		return { accessToken, refreshToken };
 	} catch (error) {
@@ -38,12 +38,11 @@ export const register = asyncHandler(async (req, res) => {
 			throw new ApiError(400, "image upload Failed !");
 		}
 	}
-	console.log(avatar);
+
 
 	//take data from
 
 	const { userName, email, password, contact, bio } = req.body;
-	console.log(userName);
 
 	//validate data
 
@@ -56,7 +55,7 @@ export const register = asyncHandler(async (req, res) => {
 	//check user already exist
 
 	const existingUser = await User.findOne({ email });
-	console.log("existingUser", existingUser);
+
 	if (existingUser) {
 		throw new ApiError(400, "User Already Exist !");
 	}
@@ -75,7 +74,7 @@ export const register = asyncHandler(async (req, res) => {
 	if (!user) {
 		throw new ApiError(400, "Error while creating user !");
 	}
-	console.log("user created");
+
 
 	const { accessToken = "", refreshToken = "" } =
 		await generateAccessandRefreshToken(user._id);
@@ -96,15 +95,14 @@ export const register = asyncHandler(async (req, res) => {
 export const login = asyncHandler(async (req, res) => {
 	console.log(req.body);
 
-	const { contact = "", email, password } = req.body;
-	console.log(contact);
+	const { email, password } = req.body;
 
-	if ([contact, email, password].some((field) => field == null)) {
+	if ([email, password].some((field) => field == null)) {
 		throw new ApiError(400, "All fields Required !");
 	}
 
 	const user = await User.findOne({
-		$or: [{ email }, { contact }],
+		$or: [{ email: email }, { contact: email }],
 	});
 
 	if (!user) {
@@ -113,10 +111,7 @@ export const login = asyncHandler(async (req, res) => {
 
 	const match = user.isPasswordCorrect(password);
 
-	if (!match)
-		throw new ApiError(400, "Invalid credentals ! ").json(
-			new ApiResponse(201, user, "User Created Successfully !")
-		);
+	if (!match) throw new ApiError(400, "Invalid credentals ! ");
 
 	const { accessToken = "", refreshToken = "" } =
 		await generateAccessandRefreshToken(user._id);

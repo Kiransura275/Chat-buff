@@ -24,6 +24,17 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
 	const userId = socket.handshake.query.userId;
 	socketList[userId] = socket.id;
+	console.log(socketList);
+	socket.on("newMessage", (data, id) => {
+		console.log(
+			"messaged recieved +++----------------------->",
+			data,
+			socketList,
+			userId,
+			id
+		);
+		if (socketList[id]) io.to(socketList[id]).emit("newMes", data);
+	});
 
 	socket.on("disconnect", () => {
 		delete socketList[userId];
