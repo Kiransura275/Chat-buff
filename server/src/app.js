@@ -25,4 +25,7 @@ import messageRoutes from "./routes/message.routes.js";
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/message", messageRoutes);
 
+//test
+app.get("", (req, res) => res.send("hello"));
+
 export default app;
