@@ -6,7 +6,7 @@ const Landpage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen w-full md:flex md:items-center  justify-center sm:justify-start">
+    <div className="h-screen w-full md:flex md:items-center  justify-center sm:justify-start bg-black">
       {/* left section */}
       <section className="sm:w-1/2 w-full  md:ml-20 border  px-10 md:px-0  pt-25  pb-7 sm:py-0">
         <div className="w-full ">
