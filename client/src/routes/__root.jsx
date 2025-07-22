@@ -26,7 +26,7 @@ function RootComponent() {
   }, []);
   return (
     <React.Fragment>
-      <div className="bg-black w-full min-h-screen">
+      <div className="bg-neutral-900 w-full min-h-screen">
         <ToastContainer
           position="top-right"
           autoClose={5000}

@@ -9,10 +9,12 @@ import More from "./more.svg";
 import Register from "./register.svg";
 import Search from "./search.svg";
 import Send from "./send.svg";
+import Left from "./left.png";
 export {
   Light,
   Code_Icon,
   Chat,
+  Left,
   File,
   Frds,
   Google,

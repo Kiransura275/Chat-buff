@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-constant-condition */
 import React, { useEffect, useRef } from "react";
-import { More, Send } from "../assets/assets";
+import { Left, More, Send } from "../assets/assets";
 import { useMessage } from "../context/MessageContext";
 import Ping from "./Ping";
 import { useState } from "react";
@@ -12,6 +12,7 @@ const ChatBox = () => {
 
   const {
     selectedUser,
+    setSelectedUser,
     ping,
     getAllPings,
     messageList,
@@ -49,18 +50,27 @@ const ChatBox = () => {
       className={`h-[100%] sm:w-2/3 w-full bg-neutral-900 sm:block ${!selectedUser && "hidden"}`}
     >
       <nav className="flex justify-between  px-10 py-5 bg-[#101010]">
-        <div className=" flex justify-center items-center">
+        <div className="flex justify-center items-center gap-5">
           <img
-            src={selectedUser.avatar}
-            className="w-10 h-10 rounded-full object-cover"
+            src={Left}
+            className="object-cover hover:scale-90 w-5 cursor-pointer "
+            onClick={() => setSelectedUser(null)}
           />
-          <div className="flex flex-col ml-6">
-            <h5 className="text-white text-[18px]">{selectedUser.userName}</h5>
-            <span
-              className={`text-sm ${true ? "text-green-500" : "text-gray-500"} `}
-            >
-              {true ? "online" : "offline"}
-            </span>
+          <div className=" flex justify-center items-center">
+            <img
+              src={selectedUser.avatar || "https://placehold.co/100"}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <div className="flex flex-col ml-6">
+              <h5 className="text-white text-[18px]">
+                {selectedUser.userName}
+              </h5>
+              <span
+                className={`text-sm ${true ? "text-green-500" : "text-gray-500"} `}
+              >
+                {true ? "online" : "offline"}
+              </span>
+            </div>
           </div>
         </div>
 

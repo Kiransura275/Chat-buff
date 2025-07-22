@@ -6,7 +6,7 @@ const app = express();
 
 app.use(
 	cors({
-		origin: "http://localhost:5173",
+		origin: "https://chat-buff-38z1-client.vercel.app",
 		allowedHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "DELETE"],

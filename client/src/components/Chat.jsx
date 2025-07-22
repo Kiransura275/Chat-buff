@@ -16,7 +16,7 @@ const Chat = () => {
   }, [selectedUser]);
 
   return (
-    <div className="h-screen   w-full sm:flex sm:gap-8 ">
+    <div className="h-screen   w-full sm:flex sm:gap-8 bg-black">
       {/* left section */}
       <section
         className={`h-[100%] sm:w-1/3  w-full bg-transparent sm:block ${selectedUser && "hidden"}`}
